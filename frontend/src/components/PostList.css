@@ -1,0 +1,31 @@
+.post-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .post-card {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 1rem;
+    background-color: #fff;
+  }
+  
+  .post-card h2 {
+    margin: 0;
+    font-size: 1.5rem;
+  }
+  
+  .post-card p {
+    margin: 0.5rem 0;
+  }
+  
+  .post-card a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .post-card a:hover {
+    text-decoration: underline;
+  }
+  
