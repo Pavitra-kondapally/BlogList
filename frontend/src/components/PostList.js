@@ -20,14 +20,20 @@ function PostList() {
   }
 
   return (
-    <div className="post-list">
-      {posts.map((post) => (
-        <div className="post-card" key={post.id}>
-          <h2>{post.title}</h2>
-          <p>{post.content.substring(0, 100)}...</p>
-          <Link to={`/posts/${post.id}`}>Read More</Link>
-        </div>
-      ))}
+    <div className="post-list-container">
+      <div className="post-list">
+        {posts.length === 0 ? (
+          <p>No Posts yet! Be the first one to write!!!</p>
+        ) : (
+          posts.map((post) => (
+            <div className="post-card" key={post.id}>
+              <h2>{post.title}</h2>
+              <p>{post.content.substring(0, 100)}...</p>
+              <Link to={`/posts/${post.id}`}>Read More</Link>
+            </div>
+          ))
+        )}
+      </div>
     </div>
   );
 }

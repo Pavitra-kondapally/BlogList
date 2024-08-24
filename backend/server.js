@@ -1,17 +1,47 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const cors = require('cors');
 const db = require('./database');
+const auth = require('./auth');
+require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 4000;
+const port = process.env.PORT || 4000;
+const secret = process.env.JWT_SECRET;
 
-// Middleware
-app.use(cors()); // Allow CORS
-app.use(express.json()); // Parse JSON bodies
+app.use(cors());
+app.use(bodyParser.json());
 
-// Define routes
+app.post('/register', (req, res) => {
+  const { username, password } = req.body;
+  auth.registerUser(username, password, (err, user) => {
+    if (err) return res.status(500).json({ message: err });
+    res.status(201).json(user);
+  });
+});
 
-// Create a new post
+app.post('/login', (req, res) => {
+  const { username, password } = req.body;
+  auth.loginUser(username, password, (err, result) => {
+    if (err) return res.status(400).json({ message: err });
+    res.json(result);
+  });
+});
+
+app.post('/verify-token', (req, res) => {
+  const token = req.body.token || req.headers['authorization']?.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({ success: false, message: 'No token provided' });
+  }
+
+  auth.verifyToken(token, (err, user) => {
+    if (err) return res.status(401).json({ success: false, message: err });
+    res.json({ success: true, user });
+  });
+});
+
+
 app.post('/posts', (req, res) => {
   const { title, content, userId } = req.body;
   console.log('Received POST request at /posts');
@@ -68,7 +98,7 @@ app.get('/posts/:id', (req, res) => {
   stmt.finalize();
 });
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
 });
