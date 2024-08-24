@@ -4,6 +4,7 @@ import './PostList.css';
 
 function PostList() {
   const [posts, setPosts] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -15,17 +16,32 @@ function PostList() {
       });
   }, []);
 
+  const filteredPosts = posts.filter((post) =>
+    post.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   if (loading) {
     return <p>Loading...</p>;
   }
 
   return (
     <div className="post-list-container">
+      <div className="search-bar-container">
+        <div className="search-bar">
+          <input
+            type="text"
+            placeholder="Search posts..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <i className="search-icon"></i>
+        </div>
+      </div>
       <div className="post-list">
-        {posts.length === 0 ? (
-          <p>No Posts yet! Be the first one to write!!!</p>
+        {filteredPosts.length === 0 ? (
+          <p>No Posts found!</p>
         ) : (
-          posts.map((post) => (
+          filteredPosts.map((post) => (
             <div className="post-card" key={post.id}>
               <h2>{post.title}</h2>
               <p>{post.content.substring(0, 100)}...</p>

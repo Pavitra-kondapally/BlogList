@@ -6,42 +6,63 @@ import './PostDetail.css';
 function PostDetail() {
   const { id } = useParams();
   const [post, setPost] = useState(null);
+  const [comments, setComments] = useState([]);
+  const [commentText, setCommentText] = useState('');
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchPost = async () => {
+    const fetchPostAndComments = async () => {
       try {
-        const response = await axios.get(`http://localhost:4000/posts/${id}`);
-        setPost(response.data);
+        const postResponse = await axios.get(`http://localhost:4000/posts/${id}`);
+        const commentsResponse = await axios.get(`http://localhost:4000/posts/${id}/comments`);
+        setPost(postResponse.data);
+        setComments(commentsResponse.data);
         setLoading(false);
       } catch (error) {
-        setError(`Failed to fetch post: ${error.message}`);
-        setLoading(false);
+        console.error('Error fetching post and comments:', error);
       }
     };
 
-    fetchPost();
+    fetchPostAndComments();
   }, [id]);
+
+  const handleCommentSubmit = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      await axios.post(`http://localhost:4000/posts/${id}/comments`, { text: commentText }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setComments([...comments, { text: commentText }]);
+      setCommentText('');
+    } catch (error) {
+      console.error('Error adding comment:', error);
+    }
+  };
 
   if (loading) {
     return <p>Loading...</p>;
   }
 
-  if (error) {
-    return <p style={{ color: 'red' }}>{error}</p>;
-  }
-
   return (
-    <div className="post-detail">
-      {post ? (
-        <>
-          <h1>{post.title}</h1>
-          <p>{post.content}</p>
-        </>
-      ) : (
-        <p>Post not found</p>
-      )}
+    <div className="post-detail-container">
+      <h2>{post.title}</h2>
+      <p>{post.content}</p>
+      <h3>Comments</h3>
+      <div className="comments-section">
+        {comments.length === 0 ? (
+          <p>No comments yet. Be the first to comment!</p>
+        ) : (
+          comments.map((comment, index) => (
+            <p key={index}>{comment.text}</p>
+          ))
+        )}
+      </div>
+      <textarea
+        placeholder="Add a comment..."
+        value={commentText}
+        onChange={(e) => setCommentText(e.target.value)}
+      />
+      <button onClick={handleCommentSubmit}>Submit Comment</button>
     </div>
   );
 }

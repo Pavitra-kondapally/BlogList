@@ -6,6 +6,44 @@
   margin-bottom: 20px;
 }
 
+/* Centering search bar container */
+.search-bar-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+/* Styling the search bar */
+.search-bar {
+  position: relative;
+  width: 50%; /* Increase the width of the search bar */
+}
+
+/* Input styling */
+.search-bar input {
+  width: 100%;
+  padding: 10px 40px 10px 20px; /* Increase padding for larger input area */
+  border-radius: 20px;
+  border: 1px solid #ddd;
+  font-size: 1.1rem;
+  margin-top: 10px;
+}
+
+/* Search icon styling */
+/* Search icon styling */
+.search-icon {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  background-image: url('https://www.svgrepo.com/show/198240/search.svg');
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+
 /* Post list styling with flexbox */
 .post-list {
   display: flex;
