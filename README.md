@@ -9,8 +9,8 @@
 
 ## Deployment
 
-- **Frontend**: Deployed using [Netlify](https://www.netlify.com/). You can access the live application frontend [here](#).
-- **Backend**: Deployed using [Render](https://render.com/). The backend API is accessible [here](#).
+- **Frontend**: Deployed using [Netlify](https://www.netlify.com/). You can access the live application frontend [here](https://66c9eb0dd4764da3a5cdf2c1--animated-trifle-7c0544.netlify.app/).
+- **Backend**: Deployed using [Render](https://render.com/). The backend API is accessible [here](https://bloglist-2.onrender.com).
 
 ## Technologies Used
 
@@ -43,7 +43,7 @@ npm install
 # Start the backend server
 npm start
 
-# The backend server will start on http://localhost:5000
+# The backend server will start on http://localhost:4000
 
 # Open a new terminal and navigate to the frontend folder
 cd frontend
